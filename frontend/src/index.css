@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=New+Amsterdam&display=swap');
+
+
+#root, body{
+    margin: 0;
+    background-color: hsl(215, 74%, 8%);
+    color: azure;
+    /* width: 100%; */
+   overflow-x: hidden;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+}
+
+
+/* .shadowed-text {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  } */
