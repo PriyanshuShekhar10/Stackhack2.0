@@ -31,7 +31,7 @@ const moviesData = {
       synopsis:
         "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
       posterUrl:
-        "https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg",
+        "https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg",trailer: 'https://www.youtube.com/watch?v=zSWdZVtXT7E',
         coverUrl: 'https://i.ytimg.com/vi/6W6XMvYH0Xs/sddefault.jpg'
     },
   ],
