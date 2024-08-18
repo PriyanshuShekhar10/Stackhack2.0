@@ -4,18 +4,22 @@ import { useParams } from "react-router-dom";
 // import Navbar from "../components/Navbar/Navbar";
 
 import "./movie.css";
+import YoutubeModal from "../../components/YoutubeModal";
+import { useState } from "react";
+// import NavbarComponent from "../../components/Navbar/NavbarComponent";
 
 const moviesData = {
   movies: [
     {
       id: "1",
-      title: "Alien: Romulus",
+      title: "Alien : Romulus",
       director: "Fede Alvarez",
       cast: ["Cailee Spaeny", "Isabela Merced", "Archie Renaux"],
       synopsis:
         "While scavenging the deep ends of a derelict space station, a group of young space colonizers come face to face with the most terrifying life form in the universe.",
       posterUrl:
         "https://upload.wikimedia.org/wikipedia/en/c/cb/Alien_Romulus_2024_%28poster%29.jpg",
+        trailer: 'https://www.youtube.com/watch?v=x0XDEhP4MQs',
       coverUrl:
         "https://npr.brightspotcdn.com/dims3/default/strip/false/crop/1300x730+0+0/resize/1100/quality/85/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F37%2F8f%2F4372aeea436abb53f929d28a781f%2Fg-alienromulus-3216-1-4875ffa5.jpg",
     },
@@ -34,6 +38,11 @@ const moviesData = {
 };
 
 export default function Movie() {
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
   const { id } = useParams();
   // const [movie, setMovie] = useState(null)
   console.log(id);
@@ -49,6 +58,7 @@ export default function Movie() {
 
   return (
     <div>
+      {/* <NavbarComponent/> */}
       <div className="movie-container  ">
         <div className="cover-image-container">
           <img className="cover-image inset-shadow" src={movie.coverUrl} alt="" />
@@ -73,6 +83,12 @@ export default function Movie() {
               <strong>SYNOPSIS:</strong>
               <br /><br /> {movie.synopsis}
             </p>
+            <button className="button-86" onClick={!modalIsOpen ?openModal: closeModal} >{!modalIsOpen ?'Watch': 'Close'} Trailer</button>
+            <YoutubeModal
+            isOpen={modalIsOpen}
+            onClose={closeModal}
+            videoId={movie.trailer.split('=')[1]}
+            />
           </div>
         </div>
       </div>

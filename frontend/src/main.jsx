@@ -7,6 +7,11 @@ import { Provider } from 'react-redux';
 import {store} from './app/store.jsx'
 import { AuthContextProvider } from './context/AuthContext.jsx';
 
+
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');  // Or whatever your root element id is
+
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
 
