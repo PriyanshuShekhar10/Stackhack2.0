@@ -1,13 +1,15 @@
-// import { Route, Routes } from "react-router-dom"
-
-import GoogleLoginButton from "./components/GoogleLoginButton"
+import { Route, Routes } from "react-router-dom"
+import Login from "./pages/Login"
+import Signup from "./pages/Signup"
+// import GoogleLoginButton from "./components/GoogleLoginButton"
 
 function App() {
 
   return (
-    <div className="App">
-              <GoogleLoginButton />
-     </div>
+    <Routes>
+       <Route path='/login' element={<Login/>} />
+       <Route path='/signup' element={<Signup/>} />
+    </Routes>
   )
 }
 
@@ -15,6 +17,3 @@ export default App
 
 
 
-// <Routes>
-// <Route path='/home' element={<Home/>} />
-// </Routes>
