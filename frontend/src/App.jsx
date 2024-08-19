@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
-import Movie from "./pages/Movie/Movie"
+import Movie from "./pages/Movie"
 // import GoogleLoginButton from "./components/GoogleLoginButton"
 
 function App() {

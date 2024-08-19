@@ -26,7 +26,6 @@
   z-index: 0;
   box-shadow: inset 0 0 100px 50px rgba(0, 0, 0, 0.9);
 
-  
 }
 
 
@@ -36,7 +35,10 @@
   display: flex;
   justify-content: center;
 }
-.movie-details{
+
+
+
+/* .movie-details{
   display: flex;
 justify-content: center;
 padding-left: 20vh;
@@ -46,7 +48,20 @@ position: absolute;
 bottom: -10px;
 font-size: larger;
 
+} */
+
+
+.movie-details {
+  display: flex;
+  flex-direction: column; /* Change to column to stack children vertically */
+  justify-content: center;
+  align-items: center; /* Center align the items */
+  margin: 0 auto; /* Center the entire container horizontally */
+  padding: 20px; /* Add padding for spacing around the content */
+  gap: 20px; /* Adds space between child elements */
 }
+
+
 
 
 .poster{
@@ -78,9 +93,8 @@ font-size: larger;
 
 
 @media (max-width: 1040px) { /* Adjust 600px to your needs */
-  .movie-details {
+  /* .movie-details {
     flex-direction: column; 
-   /* Switch to column on smaller screens */
 
     margin-top: 10rem;
     padding: 0.5rem;
@@ -89,7 +103,10 @@ font-size: larger;
     
     bottom: -20px;
 
-  }
+  } */
+
+
+  
   .movie-main{
     min-width: 0;
   }
@@ -132,6 +149,10 @@ font-size: larger;
 @media (min-width: 1040px) {
     .mobile-trailer{
       display: none;
+    }
+    .movie-details {
+      flex-direction: row; /* In larger screens, items can be in a row */
+      justify-content: space-around; /* Distributes space around items */
     }
 }
 
@@ -223,5 +244,4 @@ font-size: larger;
   padding: 5rem 0;  
 
 }
-
 

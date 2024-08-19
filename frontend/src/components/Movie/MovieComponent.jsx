@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 // import {  useState, useEffect } from "react";
 
 import "./movie.css";
-import YoutubeModal from "../../components/YoutubeModal";
+import YoutubeModal from "../YoutubeModal";
 import { useState } from "react";
-import NavbarComponent from "../../components/Navbar/NavbarComponent";
+// import NavbarComponent from "../../components/Navbar/NavbarComponent";
 
 const moviesData = {
   movies: [
@@ -36,7 +36,7 @@ const moviesData = {
   ],
 };
 
-export default function Movie() {
+export default function MovieComponent() {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -57,7 +57,7 @@ export default function Movie() {
 
   return (
     <div>
-      <NavbarComponent/>
+      {/* <NavbarComponent/> */}
       <div className="movie-container  ">
         <div className="cover-image-container">
           <img className="cover-image inset-shadow" src={movie.coverUrl} alt="" />
