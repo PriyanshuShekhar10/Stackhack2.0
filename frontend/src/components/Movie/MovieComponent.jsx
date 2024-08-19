@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 // import {  useState, useEffect } from "react";
 
 import "./movie.css";
-import YoutubeModal from "../YoutubeModal";
+// import YoutubeModal from "../YoutubeModal";
 import { useState } from "react";
+import NavbarComponent from "../Navbar/NavbarComponent";
 // import NavbarComponent from "../../components/Navbar/NavbarComponent";
 
 const moviesData = {
@@ -38,10 +39,10 @@ const moviesData = {
 
 export default function MovieComponent() {
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  // const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
+  // const openModal = () => setModalIsOpen(true);
+  // const closeModal = () => setModalIsOpen(false);
   const { id } = useParams();
   // const [movie, setMovie] = useState(null)
   console.log(id);
@@ -57,7 +58,7 @@ export default function MovieComponent() {
 
   return (
     <div>
-      {/* <NavbarComponent/> */}
+      <NavbarComponent />
       <div className="movie-container  ">
         <div className="cover-image-container">
           <img className="cover-image inset-shadow" src={movie.coverUrl} alt="" />
@@ -85,14 +86,14 @@ export default function MovieComponent() {
             <div className="mobile-trailer show">
               <button className="button-86"><a href={movie.trailer}>Watch Trailer</a></button>
             </div>
-             <div className="trailer-button hide">
+             {/* <div className="trailer-button hide">
               <button className="button-86" onClick={!modalIsOpen ?openModal: closeModal} >{!modalIsOpen ?'Watch': 'Close'} Trailer</button>
-            </div>
-            <YoutubeModal
+            </div> */}
+            {/* <YoutubeModal
             isOpen={modalIsOpen}
             onClose={closeModal}
             videoId={movie.trailer.split('=')[1]}
-            />
+            /> */}
           </div>
         </div>
         

@@ -88,7 +88,15 @@ font-size: larger;
   min-width: 25rem;
 }
 
+.mobile-trailer{
+  display:block;
+   a{
+    text-decoration: none;
+    color:white;
 
+   }
+  
+}
 
 
 
@@ -127,15 +135,7 @@ font-size: larger;
     display: none ;
   }
 
-  .mobile-trailer{
-    display:block;
-     a{
-      text-decoration: none;
-      color:white;
-
-     }
-    
-  }
+  
 
 
 }
@@ -147,9 +147,7 @@ font-size: larger;
 }
 
 @media (min-width: 1040px) {
-    .mobile-trailer{
-      display: none;
-    }
+    
     .movie-details {
       flex-direction: row; /* In larger screens, items can be in a row */
       justify-content: space-around; /* Distributes space around items */
