@@ -18,16 +18,16 @@ export default function NavbarComponent() {
             onClick={() => setVisible(!visible)}
 
           />
-          <CNavbarBrand href="#" className='new-amsterdam-regular'  style={{ color: 'white', fontSize: '2rem' }}>ScreenCode</CNavbarBrand>
+          <CNavbarBrand href="/" className='new-amsterdam-regular'  style={{ color: 'white', fontSize: '2rem' }}>ScreenCode</CNavbarBrand>
           <CCollapse className="navbar-collapse" visible={visible}>
             <CNavbarNav  className="monospace-text me-auto mb-2 mb-lg-0">
               <CNavItem>
-                <CNavLink style={{ color: 'white' }} href="#" active>
-                  Home
+                <CNavLink style={{ color: 'white' }} href="/films" active>
+                  Films
                 </CNavLink>
               </CNavItem>
               <CNavItem>
-                <CNavLink style={{ color: 'white' }} href="#">Link</CNavLink>
+                <CNavLink style={{ color: 'white' }} href="/cinemas">Cinemas</CNavLink>
               </CNavItem>
               <CNavItem>
                 <CNavLink style={{ color: 'white' }} href="#" disabled>
