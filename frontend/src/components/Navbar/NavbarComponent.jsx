@@ -18,7 +18,7 @@ export default function NavbarComponent() {
             onClick={() => setVisible(!visible)}
 
           />
-          <CNavbarBrand href="#" className='new-amsterdam-regular'  style={{ color: 'white', fontSize: '2rem' }}>Navbar</CNavbarBrand>
+          <CNavbarBrand href="#" className='new-amsterdam-regular'  style={{ color: 'white', fontSize: '2rem' }}>ScreenCode</CNavbarBrand>
           <CCollapse className="navbar-collapse" visible={visible}>
             <CNavbarNav  className="monospace-text me-auto mb-2 mb-lg-0">
               <CNavItem>

@@ -1,0 +1,92 @@
+/* Import Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+
+/* Set root variables */
+:root {
+  --first-color: hsl(14, 98%, 50%);
+  --black-color: hsl(0, 0%, 0%);
+  --white-color: hsl(0, 0%, 95%);
+  --text-color-light: hsl(0, 0%, 64%);
+  --font-medium: 500;
+  --body-font: "Bai Jamjuree", sans-serif;
+}
+
+/* Base styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--body-font);
+  background-color: var(--black-color);
+  color: var(--white-color);
+  margin: 0;
+}
+
+/* Link styling */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Footer styling */
+.footer {
+  background-color: var(--black-color);
+  color: var(--white-color);
+  padding: 2rem 0;
+}
+
+.footer__container {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: center;
+  max-width: 1120px;
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+.footer__links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer__link {
+  color: var(--white-color);
+  font-weight: var(--font-medium);
+  transition: color 0.3s;
+}
+
+.footer__link:hover {
+  color: var(--first-color);
+}
+
+.footer__copy {
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.footer__copy a {
+  color: var(--first-color);
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .footer__container {
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+  }
+
+  .footer__links {
+    justify-content: start;
+  }
+
+  .footer__copy {
+    justify-self: end;
+  }
+}

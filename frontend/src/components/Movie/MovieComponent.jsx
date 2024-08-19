@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 import "./movie.css";
 // import YoutubeModal from "../YoutubeModal";
-import { useState } from "react";
+// import { useState } from "react";
 import NavbarComponent from "../Navbar/NavbarComponent";
 // import NavbarComponent from "../../components/Navbar/NavbarComponent";
 

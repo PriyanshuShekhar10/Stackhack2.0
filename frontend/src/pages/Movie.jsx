@@ -1,3 +1,4 @@
+import Footer from "../components/Footer/Footer";
 import MovieComponent from "../components/Movie/MovieComponent";
 
 import './moviepage.css'
@@ -7,6 +8,6 @@ export default function Movie() {
 <>
 
 <MovieComponent/>
-<p>test</p>
+<Footer/>
 </>  )
 }
