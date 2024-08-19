@@ -1,40 +1,49 @@
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
-import {AcmeLogo} from "./AcmeLogo.jsx";
+import {  CButton, CCollapse, CContainer, CForm, CFormInput, CNavbar, CNavbarBrand, CNavbarNav, CNavbarToggler, CNavItem, CNavLink } from '@coreui/react';
+import '@coreui/coreui/dist/css/coreui.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState } from 'react';
+
+import './navbar.css';
 
 export default function NavbarComponent() {
+  const [visible, setVisible] = useState(false);
   return (
-    <Navbar>
-      <NavbarBrand>
-        <AcmeLogo />
-        <p className="font-bold text-inherit">ACME</p>
-      </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Features
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link href="#" aria-current="page">
-            Customers
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Integrations
-          </Link>
-        </NavbarItem>
-      </NavbarContent>
-      <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Sign Up
-          </Button>
-        </NavbarItem>
-      </NavbarContent>
-    </Navbar>
+    <>
+      <CNavbar expand="lg" className="bg-transparent " >
+        <CContainer fluid className='padded-container'>
+          <CNavbarToggler
+            style={{ color: 'white', borderColor: 'white' }}
+            aria-label="Toggle navigation"
+            aria-expanded={visible}
+            onClick={() => setVisible(!visible)}
+
+          />
+          <CNavbarBrand href="#" className='new-amsterdam-regular'  style={{ color: 'white', fontSize: '2rem' }}>Navbar</CNavbarBrand>
+          <CCollapse className="navbar-collapse" visible={visible}>
+            <CNavbarNav  className="monospace-text me-auto mb-2 mb-lg-0">
+              <CNavItem>
+                <CNavLink style={{ color: 'white' }} href="#" active>
+                  Home
+                </CNavLink>
+              </CNavItem>
+              <CNavItem>
+                <CNavLink style={{ color: 'white' }} href="#">Link</CNavLink>
+              </CNavItem>
+              <CNavItem>
+                <CNavLink style={{ color: 'white' }} href="#" disabled>
+                  Disabled
+                </CNavLink>
+              </CNavItem>
+            </CNavbarNav>
+            <CForm className="monospace-text d-flex">
+              <CFormInput type="search" className="me-2" placeholder="Search" />
+              <CButton style={{ color: 'white' }} type="submit" color="success" variant="outline">
+                Search
+              </CButton>
+            </CForm>
+          </CCollapse>
+        </CContainer>
+      </CNavbar>
+    </>
   );
 }
