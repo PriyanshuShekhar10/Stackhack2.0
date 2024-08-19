@@ -83,7 +83,12 @@ export default function Movie() {
               <strong>SYNOPSIS:</strong>
               <br /><br /> {movie.synopsis}
             </p>
-            <button className="button-86" onClick={!modalIsOpen ?openModal: closeModal} >{!modalIsOpen ?'Watch': 'Close'} Trailer</button>
+            <div className="mobile-trailer show">
+              <button className="button-86"><a href={movie.trailer}>Watch Trailer</a></button>
+            </div>
+             <div className="trailer-button hide">
+              <button className="button-86" onClick={!modalIsOpen ?openModal: closeModal} >{!modalIsOpen ?'Watch': 'Close'} Trailer</button>
+            </div>
             <YoutubeModal
             isOpen={modalIsOpen}
             onClose={closeModal}
