@@ -11,7 +11,7 @@ const adminRoutes = require('./Routes/Admin');
 const movieRoutes = require('./Routes/Movie');
 const imageuploadRoutes = require('./Routes/imageUploadRoutes');
 
-require('dotenv').config();
+require("dotenv").config();
 require('./db');
 
 app.use(bodyParser.json());
