@@ -18,7 +18,7 @@ function checkAuthToken(req, res, next) {
     }
 
 
-    jwt.verify(authToken, process.env.JWT_SECRET_KEY, (err, decoded) => {
+    jwt.verify(authToken, 'hsps1234', (err, decoded) => {
         if (err) {
             // authtoken expired
 
@@ -30,7 +30,7 @@ function checkAuthToken(req, res, next) {
                 }
 
                 else {
-                    const newAuthToken = jwt.sign({ userId: refreshDecoded.userId }, process.env.JWT_SECRET_KEY, { expiresIn: '10m' });
+                    const newAuthToken = jwt.sign({ userId: refreshDecoded.userId }, 'hsps1234', { expiresIn: '10m' });
                     const newRefreshToken = jwt.sign({ userId: refreshDecoded.userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '30m' });
 
                     res.cookie('authToken', newAuthToken, { httpOnly: true, secure: true, sameSite: 'None' });
