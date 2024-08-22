@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 require('dotenv').config();
 
 
-mongoose.connect(process.env.MONGO_URL,{
+mongoose.connect('mongodb+srv://newuser:PYHpfSEe1mnzQ3JM@cluster0.qf85m.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',{
     dbName: process.env.DB_NAME
 }).then(
     () => {
