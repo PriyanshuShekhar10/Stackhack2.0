@@ -33,11 +33,10 @@ router.post('/register', async (req, res, next) => {
             return res.status(409).json(createResponse(false, 'Email already exists'));
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = new User({
             name,
-            password : hashedPassword,
+            password ,
             email,
             city
         });
@@ -83,39 +82,20 @@ router.post('/changeCity', authTokenHandler, async (req, res, next) => {
                 return res.status(400).json(createResponse(false, 'Invalid credentials'));
             }
     
-            const authToken = jwt.sign(
-                { userId: user._id },
-                process.env.JWT_SECRET_KEY,
-                { expiresIn: '10m' }
-            );
-            const refreshToken = jwt.sign(
-                { userId: user._id },
-                process.env.JWT_REFRESH_SECRET_KEY,
-                { expiresIn: '30m' }
-            );
-    
-            res.cookie('authToken', authToken, { 
-                httpOnly: true, 
-                secure: true, 
-                sameSite: 'None' 
-            });
-            res.cookie('refreshToken', refreshToken, { 
-                httpOnly: true, 
-                secure: true, 
-                sameSite: 'None' 
-            });
+            const authToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: '10m' });
+            const refreshToken = jwt.sign({ userId: user._id }, process.env.JWT_REFRESH_SECRET_KEY, { expiresIn: '30m' });
+            res.cookie('authToken', authToken,  { httpOnly: true, secure: true, sameSite: 'None' });
+            res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'None' });
     
             res.status(200).json(createResponse(true, 'Login successful', {
                 authToken,
                 refreshToken
             }));
-    
         } catch (err) {
-            console.error('Error during login:', err);
-            next(err); // Pass the error to an error-handling middleware
+            next(err);
         }
     });
-    
+        
 
 router.get('/checklogin', authTokenHandler, async (req, res) => {
     res.json({
