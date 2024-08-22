@@ -15,7 +15,7 @@ const Login = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post('https://stackhack2-0-backend.onrender.com/movie/auth/login', {
+            const response = await axios.post('https://stackhack2-0-backend.onrender.com/auth/login', {
                 email,
                 password
             }, {
