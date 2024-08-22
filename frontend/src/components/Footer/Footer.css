@@ -25,6 +25,7 @@ body {
   background-color: var(--black-color);
   color: var(--white-color);
   margin: 0;
+  height: 10rem;
 }
 
 /* Link styling */

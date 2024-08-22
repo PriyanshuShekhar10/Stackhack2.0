@@ -5,7 +5,6 @@ import Movie from "./pages/Movie"
 import Cinemas from "./pages/Cinemas"
 import Home from "./pages/Home"
 import Films from "./pages/Films"
-// import GoogleLoginButton from "./components/GoogleLoginButton"
 
 function App() {
 
