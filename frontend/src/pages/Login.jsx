@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 import axios from 'axios';
@@ -21,7 +22,7 @@ const Login = () => {
                 });
 
                 if (response.data.ok) {
-                    navigate('/'); // Redirect to home page if authenticated
+                    navigate('/login'); // Redirect to home page if authenticated
                 }
             } catch (err) {
                 console.error('Error checking login status:', err);
@@ -94,7 +95,9 @@ const Login = () => {
                             {loading ? 'Logging in...' : 'Login'}
                         </button>
                     </form>
-                </div>
+
+                    <a href='/signup' style={{'color': 'blue', 'padding-top': '2rem'}}>Don't have an account? Register here!</a>
+                </div>  
             </div>
             <Footer />
         </>

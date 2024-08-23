@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import styles from './Signup.module.css';
 import NavbarComponent from '../components/Navbar/NavbarComponent';
 import Footer from '../components/Footer/Footer';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Signup() {
     const [formData, setFormData] = useState({
@@ -10,9 +12,30 @@ export default function Signup() {
         email: '',
         password: '',
         confirmPassword: '',
-        city: 'New York' // Fixed city input
+        city: 'Delhi' // Fixed city input
     });
 
+    const navigate = useNavigate(); // Initialize the useNavigate hook
+
+    useEffect(() => {
+        // Check if the user is already authenticated
+        const checkLoginStatus = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/auth/checklogin', {
+                    withCredentials: true
+                });
+
+                if (response.data.ok) {
+                    navigate('/'); // Redirect to home page if authenticated
+                }
+            } catch (err) {
+                console.error('Error checking login status:', err);
+                // You can optionally handle this error if necessary
+            }
+        };
+
+        checkLoginStatus();
+    }, [navigate]);
     const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
@@ -23,6 +46,10 @@ export default function Signup() {
         });
     };
 
+    const handleCity = () => {
+        toast.info('City cannot be changed for now');
+
+    }
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -135,7 +162,7 @@ export default function Signup() {
                 </div>
                 <div>
                     <label>City</label>
-                    <input
+                    <input onClick={handleCity}
                         type="text"
                         name="city"
                         value={formData.city}
