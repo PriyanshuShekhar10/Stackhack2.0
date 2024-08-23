@@ -6,6 +6,11 @@ import Cinemas from "./pages/Cinemas"
 import Home from "./pages/Home"
 import Films from "./pages/Films"
 import Profile from "./pages/Profile"
+import 'dotenv' 
+
+
+
+
 
 function App() {
 
