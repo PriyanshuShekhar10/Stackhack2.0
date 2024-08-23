@@ -17,7 +17,7 @@ const Login = () => {
         // Check if the user is already authenticated
         const checkLoginStatus = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/auth/checklogin', {
+                const response = await axios.get('https://stackhack2-0-backend.onrender.com/auth/checklogin', {
                     withCredentials: true
                 });
 
@@ -38,7 +38,7 @@ const Login = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post('http://localhost:8000/auth/login', {
+            const response = await axios.post('https://stackhack2-0-backend.onrender.com//auth/login', {
                 email,
                 password
             }, {

@@ -21,7 +21,7 @@ export default function Signup() {
         // Check if the user is already authenticated
         const checkLoginStatus = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/auth/checklogin', {
+                const response = await axios.get('https://stackhack2-0-backend.onrender.com/auth/checklogin', {
                     withCredentials: true
                 });
 
@@ -74,7 +74,7 @@ export default function Signup() {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/auth/register`, {
+            const response = await fetch(`https://stackhack2-0-backend.onrender.com/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -14,7 +14,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/auth/getuser', {
+                const response = await axios.get('https://stackhack2-0-backend.onrender.com/auth/getuser', {
                     withCredentials: true,
                 });
 

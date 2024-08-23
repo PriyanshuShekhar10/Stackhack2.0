@@ -15,7 +15,7 @@ export default function NavbarComponent() {
     // Call the /checklogin API to check if the user is authenticated
     const checkLoginStatus = async () => {
       try {
-        const response = await fetch('http://localhost:8000/auth/checklogin', {
+        const response = await fetch('https://stackhack2-0-backend.onrender.com/auth/checklogin', {
           method: 'GET',
           credentials: 'include', // Include cookies in the request
         });
