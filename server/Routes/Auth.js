@@ -109,14 +109,15 @@ router.get('/checklogin', authTokenHandler, async (req, res) => {
 })
 
 
-router.get('/logout', authTokenHandler, async (req, res) => {
-    res.clearCookie('authToken');
-    res.clearCookie('refreshToken');
+router.get('/logout', checkAuthToken, async (req, res) => {
+    res.clearCookie('authToken', { httpOnly: true, secure: true, sameSite: 'None' });
+    res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'None' });
+
     res.json({
         ok: true,
         message: 'User logged out successfully'
-    })
-})
+    });
+});
 
 router.get('/getuser', authTokenHandler, async (req, res) => {
     const user = await User.findOne({ _id: req.userId });
