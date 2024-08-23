@@ -66,35 +66,38 @@ router.post('/changeCity', authTokenHandler, async (req, res, next) => {
 })
 
 // router.post('/sendotp', async (req, res) => {})
-    router.post('/login', async (req, res, next) => {
-        try {
-            console.log(req.body);
-            const { email, password } = req.body;
-            const user = await User.findOne({ email });
-            if (!user) {
-                console.log('user not found');
-                return res.status(400).json(createResponse(false, 'Invalid credentials'));
-            }
-    
-            const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) {
-                console.log('password not matched');
-                return res.status(400).json(createResponse(false, 'Invalid credentials'));
-            }
-    
-            const authToken = jwt.sign({ userId: user._id },process.env.JWT_KEY, { expiresIn: '10m' });
-            const refreshToken = jwt.sign({ userId: user._id }, process.env.JWT_REFRESH_SECRET_KEY, { expiresIn: '30m' });
-            res.cookie('authToken', authToken,  { httpOnly: true, secure: true, sameSite: 'None' });
-            res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'None' });
-    
-            res.status(200).json(createResponse(true, 'Login successful', {
-                authToken,
-                refreshToken
-            }));
-        } catch (err) {
-            next(err);
+router.post('/login', async (req, res, next) => {
+    try {
+        console.log(req.body);
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            console.log('user not found');
+            return res.status(400).json(createResponse(false, 'Invalid credentials'));
         }
-    });
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            console.log('password not matched');
+            return res.status(400).json(createResponse(false, 'Invalid credentials'));
+        }
+
+        const authToken = jwt.sign({ userId: user._id }, process.env.JWT_KEY, { expiresIn: '10m' });
+        const refreshToken = jwt.sign({ userId: user._id }, process.env.JWT_REFRESH_SECRET_KEY, { expiresIn: '30m' });
+        res.cookie('authToken', authToken,  { httpOnly: true, secure: true, sameSite: 'None', maxAge: 365 * 24 * 60 * 60 * 1000 });
+        res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 365 * 24 * 60 * 60 * 1000 });
+
+        // Include the username in the response
+        res.status(200).json(createResponse(true, 'Login successful', {
+            authToken,
+            refreshToken,
+            username: user.username  // Assuming the username is stored in the user document
+        }));
+    } catch (err) {
+        next(err);
+    }
+});
+
         
 
 router.get('/checklogin', authTokenHandler, async (req, res) => {
