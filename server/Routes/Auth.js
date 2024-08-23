@@ -109,7 +109,7 @@ router.get('/checklogin', authTokenHandler, async (req, res) => {
 })
 
 
-router.get('/logout', checkAuthToken, async (req, res) => {
+router.get('/logout', authTokenHandler, async (req, res) => {
     res.clearCookie('authToken', { httpOnly: true, secure: true, sameSite: 'None' });
     res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'None' });
 
