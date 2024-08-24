@@ -6,7 +6,7 @@ export default function Cinemas() {
   return (
     <><NavbarComponent/>
 
-    <img src={Image} alt="" />
+    <img src={Image} alt="" style={{width: '100vw'}} />
 
     <div><h2>Cinemas</h2></div>
 

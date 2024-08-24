@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 import './ScrollComponent.css'; // Assuming you're using a separate CSS file
+import { Link } from 'react-router-dom';
 
 const ScrollComponent = () => {
   const [movies, setMovies] = useState([]);
@@ -37,9 +39,9 @@ const ScrollComponent = () => {
 
         <div className="horizontal-scroll no-scrollbar">
           <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow}>
-            {filteredMovies.map(({ _id, title, portraitImgUrl }) => (
+            {movies.map(({ _id, title, portraitImgUrl }) => (
               <Card
-                itemId={_id} // NOTE: itemId is required for track items
+                _id={_id} // NOTE: itemId is required for track items
                 title={title}
                 imgSrc={portraitImgUrl}
                 key={_id}
@@ -91,21 +93,23 @@ const Arrow = ({ onClick, className, children }) => (
   </button>
 );
 
-function Card({ title, imgSrc }) {
+function Card({ title, imgSrc, _id }) {
   return (
-    <div
-      style={{
-        width: '10rem',
-        margin: '5rem',
-      }}
-      tabIndex={0}
-    >
-      <div className="card">
-        <img src={imgSrc} alt={title} style={{ width: '100%', height: '14rem' }} />
-        <div>{title}</div>
+    <Link to={`/movie/${_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+      <div
+        style={{
+          width: '10rem',
+          margin: '5rem',
+          cursor: 'pointer',
+        }}
+        tabIndex={0}
+      >
+        <div className="card">
+          <img src={imgSrc} alt={title} style={{ width: '100%', height: '14rem' }} />
+          <div>{title}</div>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
-
 export default ScrollComponent;
