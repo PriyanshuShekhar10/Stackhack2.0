@@ -44,6 +44,7 @@ export default function SidebarComponent({ children }) {
 
   const handleLogout = async () => {
     try {
+      // Make a request to the backend to invalidate the session
       const response = await fetch("http://localhost:8000/admin/logout", {
         method: "GET",
         credentials: "include", // Include cookies in the request
@@ -51,6 +52,12 @@ export default function SidebarComponent({ children }) {
       const data = await response.json();
 
       if (data.ok) {
+        // Remove the cookie from the browser
+        document.cookie =
+          "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie =
+          "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
         setIsAuthenticated(false);
         navigate("/login"); // Redirect to login after successful logout
       }

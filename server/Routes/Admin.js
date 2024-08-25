@@ -1,29 +1,22 @@
-// adminRoutes.js
-
 const express = require("express");
 const router = express.Router();
 const Admin = require("../Models/AdminSchema"); // Import the Admin model
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const errorHandler = require("../Middlewares/errorMiddleware");
 const adminTokenHandler = require("../Middlewares/checkAdminToken");
 
-const jwt = require("jsonwebtoken");
-
-function createResponse(ok, message, data) {
-  return {
-    ok,
-    message,
-    data,
-  };
+function createResponse(ok, message, data = {}) {
+  return { ok, message, data };
 }
 
+// Register a new admin
 router.post("/register", async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
     // Check if the admin with the same email already exists
     const existingAdmin = await Admin.findOne({ email });
-
     if (existingAdmin) {
       return res
         .status(409)
@@ -31,27 +24,28 @@ router.post("/register", async (req, res, next) => {
     }
 
     // Hash the admin's password before saving it to the database
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const newAdmin = new Admin({
       name,
       email,
-      password,
+      password: hashedPassword,
     });
 
     await newAdmin.save(); // Await the save operation
 
     res.status(201).json(createResponse(true, "Admin registered successfully"));
   } catch (err) {
-    // Pass the error to the error middleware
     next(err);
   }
 });
 
+// Admin login
 router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const admin = await Admin.findOne({ email });
-
     if (!admin) {
       return res
         .status(400)
@@ -72,9 +66,12 @@ router.post("/login", async (req, res, next) => {
       { expiresIn: "10m" }
     );
 
+    // Set the authentication token in a cookie
     res.cookie("adminAuthToken", adminAuthToken, {
-      httpOnly: true,
-      secure: true,
+      httpOnly: false,
+      path: "/",
+      secure: true, // Set to true if you're using HTTPS
+      sameSite: "strict", // Can be set to 'lax' or 'strict' for better CSRF protection
     });
 
     res
@@ -85,27 +82,22 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
+// Check login status
 router.get("/checklogin", adminTokenHandler, async (req, res) => {
-  res.json({
-    adminId: req.adminId,
-    ok: true,
-    message: "Admin authenticated successfully",
-  });
+  res.json(createResponse(true, "Admin authenticated successfully"));
 });
 
+// Admin logout
 router.get("/logout", adminTokenHandler, async (req, res) => {
   res.clearCookie("adminAuthToken", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "Strict",
     path: "/",
+    httpOnly: false,
   });
 
-  res.json({
-    ok: true,
-    message: "Admin logged out successfully",
-  });
+  res.json(createResponse(true, "Admin logged out successfully"));
 });
+
+// Use error handling middleware for any unhandled errors
 router.use(errorHandler);
 
 module.exports = router;

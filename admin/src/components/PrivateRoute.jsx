@@ -31,7 +31,7 @@ const PrivateRoute = () => {
       }
     };
     checkLoginStatus();
-  }, []);
+  }, [isAuthenticated]);
 
   if (loading) {
     return <div>Loading...</div>; // Show a loading message or spinner
