@@ -43,12 +43,12 @@ export default function NavbarComponent() {
     };
 
     checkLoginStatus();
-  }, [isAuthenticated]); 
+  }, [isAuthenticated]);
 
   const handleLogout = async () => {
     try {
       const response = await fetch(
-        "https://stackhack2-0-backend.onrender.com/auth/logout",
+        "https://stackhack2-0-backend.onrender.com/admin/logout",
         {
           method: "GET",
           credentials: "include", // Include cookies in the request
@@ -121,12 +121,17 @@ export default function NavbarComponent() {
             </CForm>
             {isAuthenticated ? (
               <CNavLink style={{ color: "blue" }}>
-                    <button className="button-6 monospace-text" onClick={handleLogout}>Logout</button>
-                  </CNavLink>
+                <button
+                  className="button-6 monospace-text"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </CNavLink>
             ) : (
               <CNavLink style={{ color: "white" }} href="/login">
-                    <button className="button-6 monospace-text">Login</button>
-                  </CNavLink>
+                <button className="button-6 monospace-text">Login</button>
+              </CNavLink>
             )}
           </CCollapse>
         </CContainer>
@@ -134,5 +139,3 @@ export default function NavbarComponent() {
     </>
   );
 }
-
-

@@ -230,6 +230,9 @@ router.get('/movies', async (req, res, next) => {
         next(err); // Pass any errors to the error handling middleware
     }
 })
+
+
+
 router.get('/movies/:id', async (req, res, next) => {
     try {
         const movieId = req.params.id;
