@@ -1,37 +1,37 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
-const adminSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true 
+      type: String,
+      required: true,
+      unique: true,
     },
     password: {
-        type: String,
-        required: true
-    }
-},{
-    timestamps: true
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+adminSchema.pre("save", async function (next) {
+  const admin = this;
+
+  if (admin.isModified("password")) {
+    admin.password = await bcrypt.hash(admin.password, 8);
+  }
+
+  next();
 });
 
-
-
-
-adminSchema.pre('save', async function (next) {
-    const admin = this;
-
-    if (admin.isModified('password')) {
-        admin.password = await bcrypt.hash(admin.password, 8);
-    }
-
-    next();
-});
-
-const Admin = mongoose.model('Admin', adminSchema);
+const Admin = mongoose.model("Admin", adminSchema);
 
 module.exports = Admin;
