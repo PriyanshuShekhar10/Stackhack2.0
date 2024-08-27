@@ -499,6 +499,57 @@ router.get("/getuserbookings/:id", authTokenHandler, async (req, res, next) => {
   }
 });
 
+// Update a booking (Admin only)
+router.put("/bookings/:id", adminTokenHandler, async (req, res, next) => {
+  try {
+    const bookingId = req.params.id;
+    const updatedBooking = await Booking.findByIdAndUpdate(
+      bookingId,
+      req.body,
+      {
+        new: true,
+      }
+    );
+
+    if (!updatedBooking) {
+      return res.status(404).json({
+        ok: false,
+        message: "Booking not found",
+      });
+    }
+
+    res.status(200).json({
+      ok: true,
+      message: "Booking updated successfully",
+      data: updatedBooking,
+    });
+  } catch (err) {
+    next(err); // Pass any errors to the error handling middleware
+  }
+});
+
+// Delete a booking (Admin only)
+router.delete("/bookings/:id", adminTokenHandler, async (req, res, next) => {
+  try {
+    const bookingId = req.params.id;
+    const deletedBooking = await Booking.findByIdAndDelete(bookingId);
+
+    if (!deletedBooking) {
+      return res.status(404).json({
+        ok: false,
+        message: "Booking not found",
+      });
+    }
+
+    res.status(200).json({
+      ok: true,
+      message: "Booking deleted successfully",
+    });
+  } catch (err) {
+    next(err); // Pass any errors to the error handling middleware
+  }
+});
+
 router.use(errorHandler);
 
 module.exports = router;
