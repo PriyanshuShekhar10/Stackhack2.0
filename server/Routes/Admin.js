@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const errorHandler = require("../Middlewares/errorMiddleware");
 const adminTokenHandler = require("../Middlewares/checkAdminToken");
-const Ad = require("../Models/AdvertisementSchema");
 
 function createResponse(ok, message, data = {}) {
   return { ok, message, data };
@@ -64,7 +63,7 @@ router.post("/login", async (req, res, next) => {
     const adminAuthToken = jwt.sign(
       { adminId: admin._id },
       process.env.JWT_ADMIN_SECRET_KEY,
-      { expiresIn: "10m" }
+      { expiresIn: "30m" }
     );
 
     // Set the authentication token in a cookie
@@ -98,39 +97,7 @@ router.get("/logout", adminTokenHandler, async (req, res) => {
   res.json(createResponse(true, "Admin logged out successfully"));
 });
 
-router.post("/ads", adminTokenHandler, async (req, res, next) => {
-  try {
-    const { AdvertUrl } = req.body;
+// Use error handling middleware for any unhandled errors
+router.use(errorHandler);
 
-    const newAd = new Ad({
-      AdvertUrl,
-    });
-    await newAd.save();
-    res.status(201).json({
-      ok: true,
-      message: "Ad added successfully",
-    });
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.get("/ads", async (req, res) => {
-  try {
-    const ads = await Ad.find();
-    res.status(200).json(ads);
-  } catch (error) {
-    res.status(500).json({ message: "Error retrieving ads", error });
-  }
-});
-
-router.delete("/ads/:id", adminTokenHandler, async (req, res) => {
-  try {
-    const adId = req.params.id;
-    await Ad.findByIdAndDelete(adId);
-    res.status(200).json({ message: "Ad deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Error deleting ad", error });
-  }
-});
 module.exports = router;

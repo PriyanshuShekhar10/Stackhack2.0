@@ -1,5 +1,10 @@
 import Navbar from "../components/Navbar/Navbar";
 
 export default function Reservations() {
-  return <>Reservations</>;
+  return (
+    <>
+      <Navbar />
+      Reservations
+    </>
+  );
 }
