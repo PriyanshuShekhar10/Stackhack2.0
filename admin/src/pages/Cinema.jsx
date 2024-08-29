@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from "react";
+// Importing React and necessary hooks
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar/Navbar";
+// Importing the CSS module
+import styles from "./Cinema.module.css";
 
 export default function Cinema() {
   const [screenData, setScreenData] = useState({
@@ -15,7 +18,8 @@ export default function Cinema() {
     screenId: "",
     movieId: "",
     showTime: "",
-    showDate: "",
+    startDate: "", // New state property for start date
+    endDate: "", // New state property for end date
   });
 
   const [movies, setMovies] = useState([]);
@@ -25,7 +29,7 @@ export default function Cinema() {
   const fetchScreens = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/movie/screensbycity/Delhi",
+        `${import.meta.env.VITE_API}/movie/screensbycity/Delhi`,
         { withCredentials: true }
       );
       if (response.data.ok) {
@@ -42,9 +46,12 @@ export default function Cinema() {
     // Fetch available movies
     const fetchMovies = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/movie/movies", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API}/movie/movies`,
+          {
+            withCredentials: true,
+          }
+        );
         if (response.data.ok) {
           setMovies(response.data.data);
         } else {
@@ -79,7 +86,7 @@ export default function Cinema() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8000/movie/createscreen",
+        `${import.meta.env.VITE_API}/movie/createscreen`,
         screenData,
         { withCredentials: true }
       );
@@ -98,30 +105,51 @@ export default function Cinema() {
 
   const addMovieSchedule = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/movie/addmoviescheduletoscreen",
-        scheduleData,
-        { withCredentials: true }
-      );
-      if (response.data.ok) {
-        alert("Movie schedule added successfully!");
-      } else {
-        alert("Failed to add movie schedule.");
+    const startDate = new Date(scheduleData.startDate);
+    const endDate = new Date(scheduleData.endDate);
+
+    for (
+      let dt = new Date(startDate);
+      dt <= endDate;
+      dt.setDate(dt.getDate() + 1)
+    ) {
+      const currentScheduleData = {
+        ...scheduleData,
+        showDate: dt.toISOString().split("T")[0], // Format date to 'YYYY-MM-DD'
+      };
+
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_API}/movie/addmoviescheduletoscreen`,
+          currentScheduleData,
+          { withCredentials: true }
+        );
+        if (!response.data.ok) {
+          alert(
+            `Failed to add movie schedule for ${currentScheduleData.showDate}.`
+          );
+        }
+      } catch (error) {
+        console.error(
+          `Error adding movie schedule for ${currentScheduleData.showDate}:`,
+          error
+        );
+        alert(
+          `An error occurred while adding the movie schedule for ${currentScheduleData.showDate}.`
+        );
       }
-    } catch (error) {
-      console.error("Error adding movie schedule:", error);
-      alert("An error occurred while adding the movie schedule.");
     }
+
+    alert("Movie schedules added successfully!");
   };
 
   return (
     <>
       <Navbar />
-      <div className="container">
+      <div className={styles.container}>
         <h2>Add New Screen</h2>
-        <form onSubmit={createScreen}>
-          <div>
+        <form onSubmit={createScreen} className={styles.form}>
+          <div className={styles.inputGroup}>
             <label>Screen Name:</label>
             <input
               type="text"
@@ -131,7 +159,7 @@ export default function Cinema() {
               required
             />
           </div>
-          <div>
+          <div className={styles.inputGroup}>
             <label>Location:</label>
             <input
               type="text"
@@ -141,7 +169,7 @@ export default function Cinema() {
               required
             />
           </div>
-          <div>
+          <div className={styles.inputGroup}>
             <label>Seats:</label>
             <input
               type="number"
@@ -151,7 +179,7 @@ export default function Cinema() {
               required
             />
           </div>
-          <div>
+          <div className={styles.inputGroup}>
             <label>Screen Type:</label>
             <input
               type="text"
@@ -161,12 +189,14 @@ export default function Cinema() {
               required
             />
           </div>
-          <button type="submit">Create Screen</button>
+          <button type="submit" className={styles.button}>
+            Create Screen
+          </button>
         </form>
 
         <h2>Add Movie Schedule to Screen</h2>
-        <form onSubmit={addMovieSchedule}>
-          <div>
+        <form onSubmit={addMovieSchedule} className={styles.form}>
+          <div className={styles.inputGroup}>
             <label>Screen:</label>
             <select
               name="screenId"
@@ -175,18 +205,14 @@ export default function Cinema() {
               required
             >
               <option value="">Select Screen</option>
-              {screens.length === 0 ? (
-                <option disabled>No screens available</option>
-              ) : (
-                screens.map((screen) => (
-                  <option key={screen._id} value={screen._id}>
-                    {screen.name} - {screen.location}
-                  </option>
-                ))
-              )}
+              {screens.map((screen) => (
+                <option key={screen._id} value={screen._id}>
+                  {screen.name} - {screen.location}
+                </option>
+              ))}
             </select>
           </div>
-          <div>
+          <div className={styles.inputGroup}>
             <label>Movie:</label>
             <select
               name="movieId"
@@ -195,18 +221,14 @@ export default function Cinema() {
               required
             >
               <option value="">Select Movie</option>
-              {movies.length === 0 ? (
-                <option disabled>No movies available</option>
-              ) : (
-                movies.map((movie) => (
-                  <option key={movie._id} value={movie._id}>
-                    {movie.title}
-                  </option>
-                ))
-              )}
+              {movies.map((movie) => (
+                <option key={movie._id} value={movie._id}>
+                  {movie.title}
+                </option>
+              ))}
             </select>
           </div>
-          <div>
+          <div className={styles.inputGroup}>
             <label>Show Time:</label>
             <input
               type="time"
@@ -216,17 +238,29 @@ export default function Cinema() {
               required
             />
           </div>
-          <div>
-            <label>Show Date:</label>
+          <div className={styles.inputGroup}>
+            <label>Start Date:</label>
             <input
               type="date"
-              name="showDate"
-              value={scheduleData.showDate}
+              name="startDate"
+              value={scheduleData.startDate}
               onChange={handleScheduleChange}
               required
             />
           </div>
-          <button type="submit">Add Schedule</button>
+          <div className={styles.inputGroup}>
+            <label>End Date:</label>
+            <input
+              type="date"
+              name="endDate"
+              value={scheduleData.endDate}
+              onChange={handleScheduleChange}
+              required
+            />
+          </div>
+          <button type="submit" className={styles.button}>
+            Add Schedule
+          </button>
         </form>
       </div>
     </>

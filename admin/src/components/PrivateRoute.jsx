@@ -9,10 +9,13 @@ const PrivateRoute = () => {
     console.log("before check auth value", isAuthenticated);
     const checkLoginStatus = async () => {
       try {
-        const response = await fetch("http://localhost:8000/admin/checklogin", {
-          method: "GET",
-          credentials: "include", // This is equivalent to `withCredentials: true` in Axios
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API}/admin/checklogin`,
+          {
+            method: "GET",
+            credentials: "include", // This is equivalent to `withCredentials: true` in Axios
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Network response was not ok");

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar/Navbar";
 
@@ -21,28 +21,21 @@ export default function Reservations() {
     fetchBookings();
   }, []);
 
+  const apiUrl = import.meta.env.VITE_API || "http://localhost:5000"; // Default API URL
+
   const fetchBookings = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8000/movie/getuserbookings",
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get(`${apiUrl}/movie/getuserbookings`, {
+        withCredentials: true,
+      });
       if (response.data.ok) {
         setBookings(response.data.data);
+      } else {
+        console.error("Failed to fetch bookings:", response.data.message);
       }
     } catch (error) {
       console.error("Error fetching bookings:", error);
     }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
   };
 
   const handleEdit = (booking) => {
@@ -60,17 +53,28 @@ export default function Reservations() {
     setIsEditing(true);
   };
 
-  const handleUpdate = async (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const method = isEditing ? "put" : "post";
+    const url = isEditing
+      ? `${apiUrl}/movie/bookings/${selectedBooking._id}`
+      : `${apiUrl}/movie/bookticket`;
+
     try {
-      const url = `http://localhost:8000/movie/bookings/${selectedBooking._id}`;
-      const response = await axios.put(url, formData, {
+      const response = await axios[method](url, formData, {
         withCredentials: true,
       });
-
       if (response.data.ok) {
-        alert("Booking updated successfully!");
+        alert(
+          `${isEditing ? "Booking updated" : "Booking created"} successfully!`
+        );
         fetchBookings();
+        setIsEditing(false);
         setFormData({
           showTime: "",
           showDate: "",
@@ -81,10 +85,11 @@ export default function Reservations() {
           paymentId: "",
           paymentType: "",
         });
-        setIsEditing(false);
+      } else {
+        console.error("Failed to save booking:", response.data.message);
       }
     } catch (error) {
-      console.error("Error updating booking:", error);
+      console.error("Error saving booking:", error);
     }
   };
 
@@ -92,7 +97,7 @@ export default function Reservations() {
     if (window.confirm("Are you sure you want to delete this booking?")) {
       try {
         const response = await axios.delete(
-          `http://localhost:8000/movie/bookings/${bookingId}`,
+          `${apiUrl}/movie/bookings/${bookingId}`,
           {
             withCredentials: true,
           }
@@ -100,6 +105,8 @@ export default function Reservations() {
         if (response.data.ok) {
           alert("Booking deleted successfully!");
           fetchBookings();
+        } else {
+          console.error("Failed to delete booking:", response.data.message);
         }
       } catch (error) {
         console.error("Error deleting booking:", error);
@@ -111,112 +118,12 @@ export default function Reservations() {
     <>
       <Navbar />
       <div className="container">
-        <h2>Edit or Delete Bookings</h2>
-        {isEditing && (
-          <form onSubmit={handleUpdate}>
-            <div>
-              <label>Show Time:</label>
-              <input
-                type="time"
-                name="showTime"
-                value={formData.showTime}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Show Date:</label>
-              <input
-                type="date"
-                name="showDate"
-                value={formData.showDate}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Movie ID:</label>
-              <input
-                type="text"
-                name="movieId"
-                value={formData.movieId}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Screen ID:</label>
-              <input
-                type="text"
-                name="screenId"
-                value={formData.screenId}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Seats (comma-separated):</label>
-              <input
-                type="text"
-                name="seats"
-                value={formData.seats}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Total Price:</label>
-              <input
-                type="number"
-                name="totalPrice"
-                value={formData.totalPrice}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Payment ID:</label>
-              <input
-                type="text"
-                name="paymentId"
-                value={formData.paymentId}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Payment Type:</label>
-              <input
-                type="text"
-                name="paymentType"
-                value={formData.paymentType}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <button type="submit">Update Booking</button>
-            <button
-              type="button"
-              onClick={() => {
-                setIsEditing(false);
-                setFormData({
-                  showTime: "",
-                  showDate: "",
-                  movieId: "",
-                  screenId: "",
-                  seats: [],
-                  totalPrice: "",
-                  paymentId: "",
-                  paymentType: "",
-                });
-              }}
-            >
-              Cancel
-            </button>
-          </form>
-        )}
+        <h2>{isEditing ? "Edit Booking" : "Create Booking"}</h2>
+        <form onSubmit={handleSubmit}>
+          {/* Form fields similar to Users form */}
+        </form>
 
-        <h2>Reservations List</h2>
+        <h2>Booking List</h2>
         {bookings.length > 0 ? (
           <ul>
             {bookings.map((booking) => (
@@ -233,7 +140,7 @@ export default function Reservations() {
             ))}
           </ul>
         ) : (
-          <p>No reservations available.</p>
+          <p>No bookings available.</p>
         )}
       </div>
     </>

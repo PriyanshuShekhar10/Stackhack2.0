@@ -15,7 +15,7 @@ export default function Login() {
     const checkLoginStatus = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/admin/checklogin",
+          `${import.meta.env.VITE_API}/admin/checklogin`,
           {
             withCredentials: true,
           }
@@ -39,7 +39,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/admin/login",
+        `${import.meta.env.VITE_API}/admin/login`,
         {
           email,
           password,

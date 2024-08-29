@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const AdminDashboard = () => {
@@ -39,9 +39,12 @@ const AdminDashboard = () => {
   // Fetch functions
   const fetchCinemas = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/cine/cinemas", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API}/cine/cinemas`,
+        {
+          withCredentials: true,
+        }
+      );
       setCinemas(response.data);
     } catch (err) {
       console.error(err);
@@ -50,9 +53,12 @@ const AdminDashboard = () => {
 
   const fetchMovies = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/movie/movies", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API}/movie/movies`,
+        {
+          withCredentials: true,
+        }
+      );
       setMovies(response.data.data);
     } catch (err) {
       console.error(err);
@@ -61,9 +67,12 @@ const AdminDashboard = () => {
 
   const fetchAds = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/admin/ads", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API}/admin/ads`,
+        {
+          withCredentials: true,
+        }
+      );
       setAds(response.data);
     } catch (err) {
       console.error(err);
@@ -72,9 +81,12 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/admin/users", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API}/admin/users`,
+        {
+          withCredentials: true,
+        }
+      );
       setUsers(response.data);
     } catch (err) {
       console.error(err);
@@ -85,7 +97,7 @@ const AdminDashboard = () => {
   const createCinema = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/admin/createcinema",
+        `${import.meta.env.VITE_API}/admin/createcinema`,
         newCinema,
         {
           withCredentials: true,
@@ -106,7 +118,7 @@ const AdminDashboard = () => {
 
   const deleteCinema = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/cine/cinemas/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API}/cine/cinemas/${id}`, {
         withCredentials: true,
       });
       setCinemas(cinemas.filter((cinema) => cinema._id !== id));
@@ -118,7 +130,7 @@ const AdminDashboard = () => {
   const createMovie = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/admin/createmovie",
+        `${import.meta.env.VITE_API}/admin/createmovie`,
         newMovie,
         {
           withCredentials: true,
@@ -142,7 +154,7 @@ const AdminDashboard = () => {
 
   const deleteMovie = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/admin/movies/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API}/admin/movies/${id}`, {
         withCredentials: true,
       });
       setMovies(movies.filter((movie) => movie._id !== id));
@@ -154,7 +166,7 @@ const AdminDashboard = () => {
   const createAd = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/admin/ads",
+        `${import.meta.env.VITE_API}/admin/ads`,
         newAd,
         {
           withCredentials: true,
@@ -169,7 +181,7 @@ const AdminDashboard = () => {
 
   const deleteAd = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/admin/ads/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API}/admin/ads/${id}`, {
         withCredentials: true,
       });
       setAds(ads.filter((ad) => ad._id !== id));

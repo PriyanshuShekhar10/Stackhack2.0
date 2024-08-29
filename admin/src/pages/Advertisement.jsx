@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar/Navbar";
+import styles from "./Advertisement.module.css";
 
 export default function Advertisement() {
   const [ads, setAds] = useState([]);
@@ -14,9 +15,12 @@ export default function Advertisement() {
 
   const fetchAds = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/admin/ads", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API}/admin/ads`,
+        {
+          withCredentials: true,
+        }
+      );
       if (response.data.ok) {
         setAds(response.data.data);
       }
@@ -34,8 +38,8 @@ export default function Advertisement() {
     e.preventDefault();
     try {
       const url = isEditing
-        ? `http://localhost:8000/admin/ads/${selectedAd._id}`
-        : "http://localhost:8000/admin/ads";
+        ? `${import.meta.env.VITE_API}/admin/ads/${selectedAd._id}`
+        : `${import.meta.env.VITE_API}/admin/ads`;
       const method = isEditing ? "put" : "post";
       const response = await axios[method](url, formData, {
         withCredentials: true,
@@ -66,7 +70,7 @@ export default function Advertisement() {
     if (window.confirm("Are you sure you want to delete this advertisement?")) {
       try {
         const response = await axios.delete(
-          `http://localhost:8000/admin/ads/${adId}`,
+          `${import.meta.env.VITE_API}/admin/ads/${adId}`,
           {
             withCredentials: true,
           }
@@ -84,39 +88,52 @@ export default function Advertisement() {
   return (
     <>
       <Navbar />
-      <div className="container">
+      <div className={styles.container}>
         <h2>{isEditing ? "Edit Advertisement" : "Add New Advertisement"}</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.form}>
           <div>
-            <label>Advertisement URL:</label>
+            <label className={styles.label}>Advertisement URL (Image):</label>
             <input
               type="text"
               name="adUrl"
               value={formData.adUrl}
               onChange={handleChange}
               required
+              className={styles.input}
             />
           </div>
-          <button type="submit">
+          <button type="submit" className={styles.button}>
             {isEditing ? "Update Advertisement" : "Create Advertisement"}
           </button>
         </form>
 
         <h2>Advertisements List</h2>
         {ads.length > 0 ? (
-          <ul>
+          <ul className={styles.ul}>
             {ads.map((ad) => (
-              <li key={ad._id}>
-                <a href={ad.adUrl} target="_blank" rel="noopener noreferrer">
-                  {ad.adUrl}
-                </a>
-                <button onClick={() => handleEdit(ad)}>Edit</button>
-                <button onClick={() => handleDelete(ad._id)}>Delete</button>
+              <li key={ad._id} className={styles.li}>
+                <img
+                  src={ad.adUrl}
+                  alt="Advertisement Preview"
+                  className={styles.imagePreview}
+                />
+                <button
+                  onClick={() => handleEdit(ad)}
+                  className={styles.editButton}
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(ad._id)}
+                  className={styles.deleteButton}
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>
         ) : (
-          <p>No advertisements available.</p>
+          <p className={styles.p}>No advertisements available.</p>
         )}
       </div>
     </>

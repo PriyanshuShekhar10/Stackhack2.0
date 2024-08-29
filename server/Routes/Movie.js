@@ -514,7 +514,7 @@ router.get(
   }
 );
 
-router.get("/getuserbookings", authTokenHandler, async (req, res, next) => {
+router.get("/getuserbookings", async (req, res, next) => {
   try {
     const user = await User.findById(req.userId).populate("bookings");
     if (!user) {
@@ -545,7 +545,7 @@ router.get("/getuserbookings", authTokenHandler, async (req, res, next) => {
   }
 });
 
-router.get("/getuserbookings/:id", authTokenHandler, async (req, res, next) => {
+router.get("/getuserbookings/:id", async (req, res, next) => {
   try {
     const bookingId = req.params.id;
     const booking = await Booking.findById(bookingId);

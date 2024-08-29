@@ -22,10 +22,13 @@ export default function SidebarComponent({ children }) {
     // Call the /checklogin API to check if the user is authenticated
     const checkLoginStatus = async () => {
       try {
-        const response = await fetch("http://localhost:8000/admin/checklogin", {
-          method: "GET",
-          credentials: "include", // Include cookies in the request
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API}/admin/checklogin`,
+          {
+            method: "GET",
+            credentials: "include", // Include cookies in the request
+          }
+        );
         const data = await response.json();
 
         if (data.ok) {
@@ -45,7 +48,7 @@ export default function SidebarComponent({ children }) {
   const handleLogout = async () => {
     try {
       // Make a request to the backend to invalidate the session
-      const response = await fetch("http://localhost:8000/admin/logout", {
+      const response = await fetch(`${import.meta.env.VITE_API}/admin/logout`, {
         method: "GET",
         credentials: "include", // Include cookies in the request
       });

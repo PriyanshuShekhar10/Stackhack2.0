@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar/Navbar";
+import styles from "./Movies.module.css"; // Import the CSS module
 
 export default function Movies() {
   const [movies, setMovies] = useState([]);
@@ -24,9 +25,12 @@ export default function Movies() {
 
   const fetchMovies = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/movie/movies", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API}/movie/movies`,
+        {
+          withCredentials: true,
+        }
+      );
       if (response.data.ok) {
         setMovies(response.data.data);
       }
@@ -47,8 +51,8 @@ export default function Movies() {
     e.preventDefault();
     try {
       const url = isEditing
-        ? `http://localhost:8000/movie/movies/${selectedMovie._id}`
-        : "http://localhost:8000/movie/createmovie";
+        ? `${import.meta.env.VITE_API}/movie/movies/${selectedMovie._id}`
+        : `${import.meta.env.VITE_API}/movie/createmovie`;
       const method = isEditing ? "put" : "post";
       const response = await axios[method](url, formData, {
         withCredentials: true,
@@ -97,7 +101,7 @@ export default function Movies() {
     if (window.confirm("Are you sure you want to delete this movie?")) {
       try {
         const response = await axios.delete(
-          `http://localhost:8000/movie/movies/${movieId}`,
+          `${import.meta.env.VITE_API}/movie/movies/${movieId}`,
           { withCredentials: true }
         );
         if (response.data.ok) {
@@ -113,10 +117,10 @@ export default function Movies() {
   return (
     <>
       <Navbar />
-      <div className="container">
+      <div className={styles.container}>
         <h2>{isEditing ? "Edit Movie" : "Add New Movie"}</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.inputGroup}>
             <label>Title:</label>
             <input
               type="text"
@@ -124,18 +128,20 @@ export default function Movies() {
               value={formData.title}
               onChange={handleChange}
               required
+              className={styles.input}
             />
           </div>
-          <div>
+          <div className={styles.inputGroup}>
             <label>Description:</label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
               required
+              className={styles.input}
             ></textarea>
           </div>
-          <div>
+          <div className={styles.inputGroup}>
             <label>Portrait Image URL:</label>
             <input
               type="text"
@@ -143,9 +149,10 @@ export default function Movies() {
               value={formData.portraitImgUrl}
               onChange={handleChange}
               required
+              className={styles.input}
             />
           </div>
-          <div>
+          <div className={styles.inputGroup}>
             <label>Landscape Image URL:</label>
             <input
               type="text"
@@ -153,9 +160,10 @@ export default function Movies() {
               value={formData.landscapeImgUrl}
               onChange={handleChange}
               required
+              className={styles.input}
             />
           </div>
-          <div>
+          <div className={styles.inputGroup}>
             <label>Rating:</label>
             <input
               type="number"
@@ -163,9 +171,10 @@ export default function Movies() {
               value={formData.rating}
               onChange={handleChange}
               required
+              className={styles.input}
             />
           </div>
-          <div>
+          <div className={styles.inputGroup}>
             <label>Genre:</label>
             <input
               type="text"
@@ -173,9 +182,10 @@ export default function Movies() {
               value={formData.genre}
               onChange={handleChange}
               required
+              className={styles.input}
             />
           </div>
-          <div>
+          <div className={styles.inputGroup}>
             <label>Duration (in minutes):</label>
             <input
               type="number"
@@ -183,9 +193,10 @@ export default function Movies() {
               value={formData.duration}
               onChange={handleChange}
               required
+              className={styles.input}
             />
           </div>
-          <div>
+          <div className={styles.inputGroup}>
             <label>Trailer URL:</label>
             <input
               type="text"
@@ -193,21 +204,32 @@ export default function Movies() {
               value={formData.trailer}
               onChange={handleChange}
               required
+              className={styles.input}
             />
           </div>
-          <button type="submit">
+          <button type="submit" className={styles.button}>
             {isEditing ? "Update Movie" : "Create Movie"}
           </button>
         </form>
 
         <h2>Movies List</h2>
         {movies.length > 0 ? (
-          <ul>
+          <ul className={styles.movieList}>
             {movies.map((movie) => (
-              <li key={movie._id}>
+              <li key={movie._id} className={styles.movieItem}>
                 <h3>{movie.title}</h3>
-                <button onClick={() => handleEdit(movie)}>Edit</button>
-                <button onClick={() => handleDelete(movie._id)}>Delete</button>
+                <button
+                  onClick={() => handleEdit(movie)}
+                  className={styles.button}
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(movie._id)}
+                  className={styles.button}
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>
