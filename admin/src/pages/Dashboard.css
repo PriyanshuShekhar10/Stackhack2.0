@@ -12,6 +12,11 @@
     width: 100%;
     max-width: 960px;
 }
+.link-description{
+    color: white;
+    font-family: monospace;
+}
+
 
 .dashboard-tile {
     padding: 20px;

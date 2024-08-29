@@ -1,9 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=New+Amsterdam&display=swap');
 *{
     margin: 0;
     padding: 0;
     text-decoration: none;
     /* background-color: hsl(215, 74%, 8%); */
 
+}
+
+h1{
+        font-family: "New Amsterdam", sans-serif;
 }
 
 .container{
@@ -17,8 +22,9 @@ main{
 
 
 .sidebar{
+    font-family: monospace;
     background-color: black;
-    height: 100vh;
+    height: 100%;
 
     color: white;
     width: 300px;

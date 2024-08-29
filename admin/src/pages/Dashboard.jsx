@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import "./Dashboard.css"; // Import CSS for styling
@@ -58,8 +59,8 @@ export default function Dashboard({ adminName = "Admin" }) {
                 className="dashboard-tile"
                 style={{ backgroundColor: link.bgColor }}
               >
-                <h2>{link.name}</h2>
-                <p>{link.description}</p>
+                <h2 className="link-description">{link.name}</h2>
+                <p className="link-description">{link.description}</p>
               </div>
             </Link>
           ))}
