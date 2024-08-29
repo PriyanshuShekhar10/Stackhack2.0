@@ -1,0 +1,166 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.dateButtonContainer {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.dateButton {
+    padding: 10px 15px;
+    background-color: gray;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dateButton.selected {
+    background-color: blue;
+}
+
+.dateButton:hover {
+    background-color: darkgray;
+}
+
+.screenContainer {
+    margin-top: 20px;
+}
+
+.screen {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    background-color: #0d0030;
+}
+
+.screen h4 {
+    margin: 0 0 10px 0;
+}
+
+.screen p {
+    margin: 5px 0;
+}
+
+.loading {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.bookButton {
+    background-color: green;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.bookButton:hover {
+    background-color: darkgreen;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background: rgb(21, 0, 55);
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.seatGrid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.seat {
+    padding: 15px;
+    background-color: #ccc;
+    border: 1px solid #999;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.bookedSeat {
+    background-color: #999;
+    cursor: not-allowed;
+}
+
+.seat.selectedSeat {
+    background-color: blue;
+    color: white;
+}
+
+.paymentButton {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.paymentButton:hover {
+    background-color: #0056b3;
+}
+
+.closeButton {
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.closeButton:hover {
+    background-color: darkred;
+}
