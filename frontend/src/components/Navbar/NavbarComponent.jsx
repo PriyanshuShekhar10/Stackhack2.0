@@ -47,7 +47,7 @@ export default function NavbarComponent() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API}/admin/logout`, {
+      const response = await fetch(`${import.meta.env.VITE_API}/auth/logout`, {
         method: "GET",
         credentials: "include", // Include cookies in the request
       });
