@@ -87,12 +87,12 @@ router.post("/login", async (req, res, next) => {
       { expiresIn: "30m" }
     );
     res.cookie("authToken", authToken, {
-      httpOnly: false,
+      httpOnly: true,
       secure: true,
       sameSite: "None",
     });
     res.cookie("refreshToken", refreshToken, {
-      httpOnly: false,
+      httpOnly: true,
       secure: true,
       sameSite: "None",
     });
@@ -120,12 +120,12 @@ router.get("/checklogin", authTokenHandler, async (req, res) => {
 
 router.get("/logout", authTokenHandler, async (req, res) => {
   res.clearCookie("authToken", {
-    httpOnly: false,
+    httpOnly: true,
     secure: true,
     sameSite: "None",
   });
   res.clearCookie("refreshToken", {
-    httpOnly: false,
+    httpOnly: true,
     secure: true,
     sameSite: "None",
   });

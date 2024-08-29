@@ -46,12 +46,12 @@ function checkAuthToken(req, res, next) {
             );
 
             res.cookie("authToken", newAuthToken, {
-              httpOnly: false,
+              httpOnly: true,
               secure: true,
               sameSite: "None",
             });
             res.cookie("refreshToken", newRefreshToken, {
-              httpOnly: false,
+              httpOnly: true,
               secure: true,
               sameSite: "None",
             });
