@@ -14,9 +14,12 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/auth/getuser", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API}/auth/getuser`,
+          {
+            withCredentials: true,
+          }
+        );
 
         if (response.data.ok) {
           setUser(response.data.data); // Assuming response.data.data contains the user object

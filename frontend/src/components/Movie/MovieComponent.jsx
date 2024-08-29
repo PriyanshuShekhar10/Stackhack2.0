@@ -11,7 +11,7 @@ export default function MovieComponent() {
     const fetchMovie = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/movie/movies/${id}`
+          `${import.meta.env.VITE_API}/movie/movies/${id}`
         );
         const data = await response.json();
         setMovie(data.data);

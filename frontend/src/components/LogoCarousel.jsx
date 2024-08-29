@@ -12,9 +12,12 @@ const LogoCarousel = () => {
     // Fetch logos (advertisements) from the backend
     const fetchLogos = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/admin/ads", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API}/admin/ads`,
+          {
+            withCredentials: true,
+          }
+        );
         if (response.data.ok) {
           setLogos(response.data.data);
         } else {

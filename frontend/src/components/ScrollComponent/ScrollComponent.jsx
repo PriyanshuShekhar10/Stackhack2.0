@@ -20,7 +20,9 @@ const ScrollComponent = () => {
     // Fetch movies when the component is mounted
     const fetchMovies = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/movie/movies");
+        const response = await axios.get(
+          `${import.meta.env.VITE_API}/movie/movies`
+        );
         const fetchedMovies = response.data.data;
         setMovies(fetchedMovies);
         setFilteredMovies(fetchedMovies);

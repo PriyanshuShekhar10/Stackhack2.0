@@ -22,7 +22,7 @@ export default function Signup() {
     const checkLoginStatus = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/auth/checklogin",
+          `${import.meta.env.VITE_API}/auth/checklogin`,
           {
             withCredentials: true,
           }
@@ -76,13 +76,16 @@ export default function Signup() {
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API}/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       const result = await response.json();
 
       if (result.ok) {

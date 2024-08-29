@@ -97,7 +97,9 @@ export default function MovieScreens() {
         setLoading(true);
         try {
           const response = await fetch(
-            `http://localhost:8000/movie/screensbymovieschedule/${city}/${selectedDate}/${movieId}`,
+            `${
+              import.meta.env.VITE_API
+            }/movie/screensbymovieschedule/${city}/${selectedDate}/${movieId}`,
             {
               method: "GET",
               credentials: "include",
@@ -131,7 +133,9 @@ export default function MovieScreens() {
   const fetchUnavailableSeats = async (screenId, showDate) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/movie/schedulebymovie/${screenId}/${showDate}/${movieId}`,
+        `${
+          import.meta.env.VITE_API
+        }/movie/schedulebymovie/${screenId}/${showDate}/${movieId}`,
         {
           method: "GET",
           credentials: "include",
@@ -185,15 +189,18 @@ export default function MovieScreens() {
         // Retrieve the token from localStorage, sessionStorage, or wherever it's stored
         const authToken = localStorage.getItem("authToken"); // or sessionStorage
 
-        const response = await fetch("http://localhost:8000/movie/bookticket", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`, // Include the token in the Authorization header
-          },
-          credentials: "include",
-          body: JSON.stringify(bookingDetails),
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API}/movie/bookticket`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`, // Include the token in the Authorization header
+            },
+            credentials: "include",
+            body: JSON.stringify(bookingDetails),
+          }
+        );
 
         const data = await response.json();
         if (data.ok) {

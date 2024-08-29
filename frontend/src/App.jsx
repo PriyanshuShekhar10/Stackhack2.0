@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import "dotenv";
 
 function App() {
+  console.log(import.meta.env.VITE_API);
   return (
     <Routes>
       <Route path="/login" element={<Login />} />

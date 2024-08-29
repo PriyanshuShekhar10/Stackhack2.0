@@ -12,7 +12,7 @@ export default function Cinemas() {
     const fetchScreens = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/movie/screensbycity/Delhi",
+          `${import.meta.env.VITE_API}/movie/screensbycity/Delhi`,
           {
             withCredentials: true,
           }
