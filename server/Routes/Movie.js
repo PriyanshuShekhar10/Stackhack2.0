@@ -9,6 +9,8 @@ const Screen = require("../Models/ScreenSchema");
 const errorHandler = require("../Middlewares/errorMiddleware");
 const authTokenHandler = require("../Middlewares/checkAuthToken");
 const adminTokenHandler = require("../Middlewares/checkAdminToken");
+const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Types;
 
 function createResponse(ok, message, data) {
   return {
@@ -135,6 +137,7 @@ router.post("/addcelebtomovie", adminTokenHandler, async (req, res, next) => {
     next(err); // Pass any errors to the error handling middleware
   }
 });
+
 router.post("/createscreen", adminTokenHandler, async (req, res, next) => {
   try {
     const { name, location, seats, city, screenType } = req.body;
@@ -202,6 +205,8 @@ router.post(
 );
 
 // user access
+// Booking a movie (User Access)
+
 router.post("/bookticket", authTokenHandler, async (req, res, next) => {
   try {
     const {
@@ -214,74 +219,119 @@ router.post("/bookticket", authTokenHandler, async (req, res, next) => {
       paymentId,
       paymentType,
     } = req.body;
-    console.log(req.body);
 
-    // You can create a function to verify payment id
+    // Validate the inputs
+    if (
+      !showTime ||
+      !showDate ||
+      !movieId ||
+      !screenId ||
+      !seats ||
+      seats.length === 0 ||
+      !totalPrice ||
+      !paymentId ||
+      !paymentType
+    ) {
+      return res.status(400).json({
+        ok: false,
+        message: "Missing required fields for booking.",
+      });
+    }
 
-    const screen = await Screen.findById(screenId);
+    // Validate movieId and screenId
+    if (
+      !mongoose.Types.ObjectId.isValid(movieId) ||
+      !mongoose.Types.ObjectId.isValid(screenId)
+    ) {
+      return res.status(400).json({
+        ok: false,
+        message: "Invalid Movie ID or Screen ID.",
+      });
+    }
 
+    // Convert movieId and screenId to ObjectId
+    const movieObjectId = new mongoose.Types.ObjectId(movieId);
+    const screenObjectId = new mongoose.Types.ObjectId(screenId);
+
+    // Check if the movie exists
+    const movie = await Movie.findById(movieObjectId);
+    if (!movie) {
+      return res.status(404).json({
+        ok: false,
+        message: "Movie not found.",
+      });
+    }
+
+    // Check if the screen exists
+    const screen = await Screen.findById(screenObjectId);
     if (!screen) {
       return res.status(404).json({
         ok: false,
-        message: "Theatre not found",
+        message: "Screen not found.",
       });
     }
 
-    const movieSchedule = screen.movieSchedules.find((schedule) => {
-      console.log(schedule);
-      let showDate1 = new Date(schedule.showDate);
-      let showDate2 = new Date(showDate);
-      if (
-        showDate1.getDay() === showDate2.getDay() &&
-        showDate1.getMonth() === showDate2.getMonth() &&
-        showDate1.getFullYear() === showDate2.getFullYear() &&
-        schedule.showTime === showTime &&
-        schedule.movieId == movieId
-      ) {
-        return true;
-      }
-      return false;
-    });
+    // Find the movie schedule
+    const movieSchedule = screen.movieSchedules.find(
+      (schedule) =>
+        schedule.movieId.equals(movieObjectId) &&
+        new Date(schedule.showDate).toISOString() ===
+          new Date(showDate).toISOString() &&
+        schedule.showTime === showTime
+    );
 
+    // Check if the movie schedule exists
     if (!movieSchedule) {
       return res.status(404).json({
         ok: false,
-        message: "Movie schedule not found",
+        message: "Movie schedule not found.",
       });
     }
 
-    const user = await User.findById(req.userId);
-    if (!user) {
-      return res.status(404).json({
+    // Ensure the selected seats are not already booked
+    const seatConflict = seats.some((seat) =>
+      movieSchedule.notAvailableSeats.some(
+        (unavailableSeat) =>
+          unavailableSeat.row === seat.row && unavailableSeat.col === seat.col
+      )
+    );
+
+    if (seatConflict) {
+      return res.status(400).json({
         ok: false,
-        message: "User not found",
+        message: "One or more selected seats are already booked.",
       });
     }
-    console.log("before newBooking done");
+
+    // Create a new booking
     const newBooking = new Booking({
-      userId: req.userId,
       showTime,
       showDate,
-      movieId,
-      screenId,
+      movieId: movieObjectId,
+      screenId: screenObjectId,
       seats,
       totalPrice,
       paymentId,
       paymentType,
+      userId: req.userId, // Retrieved from authTokenHandler
     });
-    await newBooking.save();
-    console.log("newBooking done");
 
+    // Save the booking
+    await newBooking.save();
+
+    // Update the screen to mark seats as booked
     movieSchedule.notAvailableSeats.push(...seats);
     await screen.save();
-    console.log("screen saved");
 
-    user.bookings.push(newBooking._id);
-    await user.save();
-    console.log("user saved");
+    // Add the booking to the user's booking list
+    await User.findByIdAndUpdate(req.userId, {
+      $push: { bookings: newBooking._id },
+    });
+
     res.status(201).json({
       ok: true,
       message: "Booking successful",
+      data: newBooking,
     });
   } catch (err) {
     next(err); // Pass any errors to the error handling middleware
@@ -407,45 +457,60 @@ router.get(
 router.get(
   "/schedulebymovie/:screenid/:date/:movieid",
   async (req, res, next) => {
-    const screenId = req.params.screenid;
-    const date = req.params.date;
-    const movieId = req.params.movieid;
+    try {
+      const screenId = req.params.screenid;
+      const date = req.params.date;
+      const movieId = req.params.movieid;
 
-    const screen = await Screen.findById(screenId);
+      // Find the screen by ID
+      const screen = await Screen.findById(screenId);
 
-    if (!screen) {
-      return res
-        .status(404)
-        .json(createResponse(false, "Screen not found", null));
-    }
-
-    const movieSchedules = screen.movieSchedules.filter((schedule) => {
-      let showDate = new Date(schedule.showDate);
-      let bodyDate = new Date(date);
-      if (
-        showDate.getDay() === bodyDate.getDay() &&
-        showDate.getMonth() === bodyDate.getMonth() &&
-        showDate.getFullYear() === bodyDate.getFullYear() &&
-        schedule.movieId == movieId
-      ) {
-        return true;
+      if (!screen) {
+        return res
+          .status(404)
+          .json(createResponse(false, "Screen not found", null));
       }
-      return false;
-    });
-    console.log(movieSchedules);
 
-    if (!movieSchedules) {
-      return res
-        .status(404)
-        .json(createResponse(false, "Movie schedule not found", null));
+      // Filter the movie schedules for the specific date and movie
+      const movieSchedule = screen.movieSchedules.find((schedule) => {
+        let showDate = new Date(schedule.showDate);
+        let bodyDate = new Date(date);
+        return (
+          showDate.getDay() === bodyDate.getDay() &&
+          showDate.getMonth() === bodyDate.getMonth() &&
+          showDate.getFullYear() === bodyDate.getFullYear() &&
+          schedule.movieId == movieId
+        );
+      });
+
+      // If no matching schedule is found, return 404
+      if (!movieSchedule) {
+        return res
+          .status(404)
+          .json(createResponse(false, "Movie schedule not found", null));
+      }
+
+      // Return the screen, the matching movie schedule, and the notAvailableSeats
+      res.status(200).json(
+        createResponse(true, "Movie schedule retrieved successfully", {
+          screen: {
+            _id: screen._id,
+            name: screen.name,
+            location: screen.location,
+            city: screen.city,
+            screenType: screen.screenType,
+          },
+          movieSchedule: {
+            _id: movieSchedule._id,
+            showTime: movieSchedule.showTime,
+            showDate: movieSchedule.showDate,
+            notAvailableSeats: movieSchedule.notAvailableSeats,
+          },
+        })
+      );
+    } catch (err) {
+      next(err);
     }
-
-    res.status(200).json(
-      createResponse(true, "Movie schedule retrieved successfully", {
-        screen,
-        movieSchedulesforDate: movieSchedules,
-      })
-    );
   }
 );
 

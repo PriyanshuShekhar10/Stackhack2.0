@@ -10,7 +10,9 @@ export default function MovieComponent() {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const response = await fetch(`https://stackhack2-0-backend.onrender.com/movie/movies/${id}`);
+        const response = await fetch(
+          `http://localhost:8000/movie/movies/${id}`
+        );
         const data = await response.json();
         setMovie(data.data);
       } catch (error) {
@@ -30,12 +32,20 @@ export default function MovieComponent() {
       <NavbarComponent />
       <div className="movie-container">
         <div className="cover-image-container">
-          <img className="cover-image inset-shadow" src={movie.landscapeImgUrl} alt={movie.title} />
+          <img
+            className="cover-image inset-shadow"
+            src={movie.landscapeImgUrl}
+            alt={movie.title}
+          />
         </div>
 
         <div className="movie-details">
           <div className="movie-main">
-            <img className="poster" src={movie.portraitImgUrl} alt={movie.title} />
+            <img
+              className="poster"
+              src={movie.portraitImgUrl}
+              alt={movie.title}
+            />
             <div className="title new-amsterdam-regular">
               <h1>{movie.title.toUpperCase()}</h1>
             </div>
@@ -62,11 +72,17 @@ export default function MovieComponent() {
               <br /> {movie.description}
             </p>
             <div className="mobile-trailer show">
-              {movie.trailer&&<button className="button-86">
-                <a href={movie.trailer} target="_blank" rel="noopener noreferrer">
-                  Watch Trailer
-                </a>
-              </button>}
+              {movie.trailer && (
+                <button className="button-86">
+                  <a
+                    href={movie.trailer}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Watch Trailer
+                  </a>
+                </button>
+              )}
             </div>
           </div>
         </div>

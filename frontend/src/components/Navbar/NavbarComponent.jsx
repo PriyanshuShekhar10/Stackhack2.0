@@ -25,13 +25,10 @@ export default function NavbarComponent() {
     // Call the /checklogin API to check if the user is authenticated
     const checkLoginStatus = async () => {
       try {
-        const response = await fetch(
-          "https://stackhack2-0-backend.onrender.com/auth/checklogin",
-          {
-            method: "GET",
-            credentials: "include", // Include cookies in the request
-          }
-        );
+        const response = await fetch("http://localhost:8000/auth/checklogin", {
+          method: "GET",
+          credentials: "include", // Include cookies in the request
+        });
         const data = await response.json();
 
         if (data.ok) {
@@ -47,13 +44,10 @@ export default function NavbarComponent() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(
-        "https://stackhack2-0-backend.onrender.com/admin/logout",
-        {
-          method: "GET",
-          credentials: "include", // Include cookies in the request
-        }
-      );
+      const response = await fetch("http://localhost:8000/admin/logout", {
+        method: "GET",
+        credentials: "include", // Include cookies in the request
+      });
       const data = await response.json();
       setIsAuthenticated(false);
 

@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const seatSchema = new mongoose.Schema({
+  seat_id: String,
+  row: Number,
+  col: Number,
+  price: Number,
+  isBooked: {
+    type: Boolean,
+    default: false,
+  },
+});
+
 const screenSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -9,16 +20,16 @@ const screenSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  seats: {
-    type: Array,
-    required: true,
-  },
   city: {
     type: String,
     required: true,
   },
   screenType: {
     type: String, // Example: "Standard", "IMAX", "VIP", etc.
+    required: true,
+  },
+  seats: {
+    type: [[seatSchema]], // 2D array of seat objects
     required: true,
   },
   movieSchedules: [
@@ -31,11 +42,9 @@ const screenSchema = new mongoose.Schema({
       showTime: String,
       notAvailableSeats: [
         {
-          // { row: 'D', col: 0, seat_id: '10', price: 300 }
-          row: String,
+          row: Number,
           col: Number,
           seat_id: String,
-          price: Number,
         },
       ],
       showDate: Date,

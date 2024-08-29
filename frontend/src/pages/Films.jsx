@@ -16,9 +16,7 @@ const Films = () => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await axios.get(
-          "https://stackhack2-0-backend.onrender.com/movie/movies"
-        );
+        const response = await axios.get("http://localhost:8000/movie/movies");
         setMovies(response.data.data);
         setFilteredMovies(response.data.data);
       } catch (error) {
