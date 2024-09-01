@@ -30,7 +30,7 @@
     background-color: #eee;
     border: 1px solid #ccc;
     cursor: pointer;
-    color: black
+    color: black;
 }
 
 .selected {
@@ -63,34 +63,52 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.8);
+    /* Darker background for better contrast */
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
+    /* Ensures the modal is above other elements */
+    overflow-y: auto;
+    /* Allows scrolling if content is too tall */
 }
 
 .modalContent {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
-    width: 400px;
-    max-width: 90%;
+    width: 90%;
+    max-width: 500px;
+    /* Adjusts the modal width for smaller screens */
+    max-height: 90vh;
+    /* Ensures modal content does not overflow the viewport */
+    overflow-y: auto;
+    /* Enables scrolling within the modal if content overflows */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    /* Adds a subtle shadow for depth */
 }
 
 .seatGrid {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
+    /* Responsive grid layout */
     gap: 5px;
+    margin-top: 10px;
 }
 
 .seatRow {
-    display: flex;
+    display: contents;
+    /* Ensures seats are grid items directly */
 }
 
 .seat {
     padding: 10px;
     background-color: #ddd;
     cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+    /* Adjusts font size for better readability */
 }
 
 .bookedSeat {
@@ -109,6 +127,8 @@
     border: none;
     cursor: pointer;
     margin-top: 20px;
+    width: 100%;
+    /* Makes the button take the full width of the modal */
 }
 
 .closeButton {
@@ -118,4 +138,19 @@
     border: none;
     cursor: pointer;
     margin-top: 10px;
+    width: 100%;
+    /* Makes the button take the full width of the modal */
+}
+
+@media (max-width: 600px) {
+    .seat {
+        padding: 8px;
+        font-size: 12px;
+        /* Adjusts font size for smaller screens */
+    }
+
+    .paymentButton,
+    .closeButton {
+        padding: 8px;
+    }
 }

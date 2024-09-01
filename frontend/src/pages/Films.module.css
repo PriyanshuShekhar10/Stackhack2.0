@@ -3,10 +3,10 @@
 }
 
 .heading {
-    font-size: 2rem;
+    font-size: 2.5rem;
     text-align: center;
-    margin-bottom: 20px;
-    color: #333;
+    margin-bottom: 30px;
+    color: white;
 }
 
 .filters {
@@ -27,7 +27,7 @@
 .label {
     font-weight: bold;
     margin-bottom: 5px;
-    color: #555;
+    color:white;
 }
 
 .select,
@@ -40,47 +40,74 @@
 
 .movieList {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
-    gap: 15px;
-    justify-content: center;
+    grid-template-columns: repeat(3, 1fr);
+    /* Default to 3 cards per row on desktop */
+    gap: 10rem;
+    justify-content: space-around;
 }
 
 .movieCard {
-    width: 8rem;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: hsl(215, 74%, 8%);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
-    padding: 10px;
+    padding: 15px;
+    max-height:400px ;
+    /* Set maximum height */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
 }
 
 .movieCard:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
 .movieCard img {
     width: 100%;
     height: auto;
-    border-radius: 4px;
+    max-height: 60%;
+    /* Use a percentage to maintain aspect ratio within the card */
+    object-fit: contain;
+    /* Ensure the image fits within the container without cropping */
+    border-radius: 6px;
+    margin-bottom: 15px;
 }
 
 .movieCard h2 {
-    font-size: 1rem;
+    font-size: 1.25rem;
     margin: 10px 0;
-    color: #333;
+    color:white;
+    flex-grow: 1;
+    /* Allow heading to take available space */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* Ensure the text is centered */
 }
 
 .movieCard p {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     margin: 5px 0;
-    color: #666;
+    color: whitef;
+    text-align: center;
 }
 
 .movieCard p span {
     font-weight: bold;
+}
+
+@media (max-width: 1024px) {
+    .movieList {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 cards per row on medium screens */
+    }
 }
 
 @media (max-width: 768px) {
@@ -93,7 +120,14 @@
     }
 
     .movieList {
-        grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
-        /* 1 card per row on smaller screens */
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 cards per row on smaller tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .movieList {
+        grid-template-columns: 1fr;
+        /* 1 card per row on small screens */
     }
 }

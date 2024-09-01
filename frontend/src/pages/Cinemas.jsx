@@ -1,57 +1,77 @@
-import React, { useState, useEffect } from "react";
-import Footer from "../components/Footer/Footer";
-import NavbarComponent from "../components/Navbar/NavbarComponent";
-import Image from "../assets/cinema.jpg";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./CinemasPage.css"; // Optional: For styling
+import NavbarComponent from "../components/Navbar/NavbarComponent";
 
-export default function Cinemas() {
-  const [screens, setScreens] = useState([]);
+const CinemasPage = () => {
+  const [cinemas, setCinemas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch screens in Delhi
-    const fetchScreens = async () => {
+    // Replace with your actual API base URL
+    const API_BASE_URL = `${import.meta.env.VITE_API}`; // Example
+
+    const fetchCinemas = async () => {
       try {
+        // Fetch all cinemas in Delhi
         const response = await axios.get(
-          `${import.meta.env.VITE_API}/movie/screensbycity/Delhi`,
-          {
-            withCredentials: true,
-          }
+          `${API_BASE_URL}/movie/screensbycity/delhi`
         );
         if (response.data.ok) {
-          setScreens(response.data.data);
+          setCinemas(response.data.data);
         } else {
-          console.error("No screens found.");
+          setError(response.data.message || "Failed to fetch cinemas.");
         }
-      } catch (error) {
-        console.error("Error fetching screens:", error);
+      } catch (err) {
+        setError(err.message || "An error occurred while fetching cinemas.");
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchScreens();
+    fetchCinemas();
   }, []);
+
+  if (loading) {
+    return <div>Loading cinemas...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (cinemas.length === 0) {
+    return <div>No cinemas found in Delhi.</div>;
+  }
 
   return (
     <>
       <NavbarComponent />
-      <img src={Image} alt="Cinema Banner" style={{ width: "100vw" }} />
-      <div>
-        <h2>Cinemas in Delhi</h2>
-        {screens.length > 0 ? (
-          <ul>
-            {screens.map((screen) => (
-              <li key={screen._id}>
-                <h3>{screen.name}</h3>
-                <p>Location: {screen.location}</p>
-                <p>Seats: {screen.seats}</p>
-                <p>Screen Type: {screen.screenType}</p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No screens available in Delhi.</p>
-        )}
+      <h1 className=" page-title new-amsterdam-regular">Cinemas in Delhi</h1>
+      <div className="cinemas-container">
+        {cinemas.map((cinema) => (
+          <div key={cinema._id} className="cinema-card">
+            <div className="cinema-card-image">
+              <img
+                src="https://t3.ftcdn.net/jpg/02/81/84/98/360_F_281849878_0Memw2hdFHyggA8gmK6rc8QSU9JnjYba.jpg"
+                alt="Cinema"
+              />
+            </div>
+            <div className="cinema-card-info">
+              <h2>{cinema.name}</h2>
+              <p>
+                <strong>Location:</strong> {cinema.location}
+              </p>
+              <p>
+                <strong>Screen Type:</strong> {cinema.screenType}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
-      <Footer />
     </>
   );
-}
+};
+
+export default CinemasPage;
