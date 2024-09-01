@@ -37,7 +37,7 @@ const ScrollComponent = () => {
   return (
     <>
       <div>
-        <h1>Movie List</h1>
+        <h1 className="new-amsterdam-regular ">Movie List</h1>
 
         <div className="horizontal-scroll no-scrollbar">
           <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow}>

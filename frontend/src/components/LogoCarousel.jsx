@@ -64,9 +64,9 @@ const LogoCarousel = () => {
           </div>
         ))}
       </Slider>
-      <p className={styles.description}>
+      {/* <p className={styles.description}>
         Get to know us in 120 Seconds, Watch the video!
-      </p>
+      </p> */}
     </div>
   );
 };

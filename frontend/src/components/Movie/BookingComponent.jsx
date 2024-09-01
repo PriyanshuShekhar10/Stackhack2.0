@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from "./MovieScreens.module.css";
+import styles from "./BookingComponent.module.css";
 
 function SeatSelection({
   totalRows,

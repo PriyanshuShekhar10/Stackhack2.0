@@ -30,6 +30,7 @@
     background-color: #eee;
     border: 1px solid #ccc;
     cursor: pointer;
+    color: black
 }
 
 .selected {
