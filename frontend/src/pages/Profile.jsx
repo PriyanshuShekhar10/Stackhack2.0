@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import NavbarComponent from "../components/Navbar/NavbarComponent";
 import Footer from "../components/Footer/Footer";
-import styles from "./Profile.module.css"; // Create a CSS module for styling
+import styles from "./Profile.module.css";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -22,15 +22,15 @@ const Profile = () => {
         );
 
         if (response.data.ok) {
-          setUser(response.data.data); // Assuming response.data.data contains the user object
+          setUser(response.data.data);
         } else {
           toast.error(response.data.message);
-          navigate("/login"); // Redirect to login if not authenticated
+          navigate("/login");
         }
       } catch (err) {
         toast.error("Failed to fetch user data");
         console.error("Error fetching user data:", err);
-        navigate("/login"); // Redirect to login if there's an error
+        navigate("/login");
       } finally {
         setLoading(false);
       }
@@ -40,7 +40,11 @@ const Profile = () => {
   }, [navigate]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className={styles.container}>
+        <p>Loading...</p>
+      </div>
+    );
   }
 
   return (

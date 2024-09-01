@@ -5,7 +5,7 @@ const Footer = () => {
       <div className="footer__container container grid">
         <ul className="footer__links">
           <li>
-            <a href="#home" className="footer__link">
+            <a href="/" className="footer__link">
               Home
             </a>
           </li>

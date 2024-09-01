@@ -140,14 +140,34 @@ router.post("/addcelebtomovie", adminTokenHandler, async (req, res, next) => {
 
 router.post("/createscreen", adminTokenHandler, async (req, res, next) => {
   try {
-    const { name, location, seats, city, screenType } = req.body;
+    const { name, location, city, screenType } = req.body;
+
+    // Default seat configuration (e.g., 10 rows with 10 seats each)
+    const numberOfRows = 10;
+    const seatsPerRow = 10;
+    const seats = [];
+
+    for (let row = 0; row < numberOfRows; row++) {
+      const rowSeats = [];
+      for (let col = 0; col < seatsPerRow; col++) {
+        rowSeats.push({
+          seat_id: `R${row + 1}C${col + 1}`,
+          row: row + 1,
+          col: col + 1,
+          price: 100, // Default price
+          isBooked: false,
+        });
+      }
+      seats.push(rowSeats);
+    }
+
     const newScreen = new Screen({
       name,
       location,
-      seats,
       city: city.toLowerCase(),
       screenType,
-      movieSchedules: [],
+      seats, // Use the generated seats array
+      movieSchedules: [], // Empty initially
     });
 
     await newScreen.save();

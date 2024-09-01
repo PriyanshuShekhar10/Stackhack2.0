@@ -73,7 +73,12 @@ export default function MovieComponent() {
             </p>
             <div className="mobile-trailer show">
               {movie.trailer && (
-                <button className="button-86">
+                <button
+                  className="button-86"
+                  onClick={() => {
+                    window.open(movie.trailer, "_blank", "noopener noreferrer");
+                  }}
+                >
                   <a
                     href={movie.trailer}
                     target="_blank"

@@ -17,6 +17,7 @@ function SeatSelection({
         const isBooked = unavailableSeats.some(
           (seat) => seat.row === row && seat.col === col
         );
+        console.log(`Seat ${seatId} booked status: ${isBooked}`);
         rowSeats.push({
           seat_id: seatId,
           row,
@@ -37,7 +38,7 @@ function SeatSelection({
         <div key={rowIndex} className={styles.seatRow}>
           {row.map((seat, colIndex) => (
             <div
-              key={`${rowIndex}-${colIndex}`}
+              key={`${seat.seat_id}-${rowIndex}-${colIndex}`}
               className={`${styles.seat} ${
                 seat.isBooked ? styles.bookedSeat : ""
               } ${
@@ -89,12 +90,16 @@ export default function MovieScreens() {
 
   const handleCityChange = (e) => setCity(e.target.value);
 
-  const handleDateChange = (date) => setSelectedDate(date);
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setScreens([]); // Clear screens when a new date is selected
+  };
 
   useEffect(() => {
     const fetchScreens = async () => {
       if (movieId && selectedDate && city) {
         setLoading(true);
+        setScreens([]); // Clear previous screens before fetching new ones
         try {
           const response = await fetch(
             `${
@@ -107,13 +112,15 @@ export default function MovieScreens() {
           );
 
           const data = await response.json();
-          if (data.ok) {
+          if (data.ok && data.data.length > 0) {
             setScreens(data.data);
           } else {
-            console.error("Failed to fetch screens.");
+            setScreens([]); // If no screens available, set empty array
+            console.error("No screens available for the selected date.");
           }
         } catch (error) {
           console.error("Error fetching screens:", error);
+          setScreens([]); // Set empty array on error
         } finally {
           setLoading(false);
         }
@@ -186,7 +193,6 @@ export default function MovieScreens() {
       };
 
       try {
-        // Retrieve the token from localStorage, sessionStorage, or wherever it's stored
         const authToken = localStorage.getItem("authToken"); // or sessionStorage
 
         const response = await fetch(
@@ -266,21 +272,27 @@ export default function MovieScreens() {
                 {screen.name} - {screen.location}
               </h4>
               <p>Screen Type: {screen.screenType}</p>
-              {screen.movieSchedules.map((schedule, schedIndex) => (
-                <div key={`${schedule._id}-${schedIndex}`}>
-                  <p>Show Time: {schedule.showTime}</p>
-                  <p>
-                    Show Date:{" "}
-                    {new Date(schedule.showDate).toLocaleDateString()}
-                  </p>
-                  <button
-                    className={styles.bookButton}
-                    onClick={() => handleShowClick(schedule, screen._id)}
-                  >
-                    Select Seats & Book
-                  </button>
-                </div>
-              ))}
+              {screen.movieSchedules
+                .filter(
+                  (schedule) =>
+                    new Date(schedule.showDate).toISOString().split("T")[0] ===
+                    selectedDate
+                )
+                .map((schedule, schedIndex) => (
+                  <div key={`${schedule._id}-${schedIndex}`}>
+                    <p>Show Time: {schedule.showTime}</p>
+                    <p>
+                      Show Date:{" "}
+                      {new Date(schedule.showDate).toLocaleDateString()}
+                    </p>
+                    <button
+                      className={styles.bookButton}
+                      onClick={() => handleShowClick(schedule, screen._id)}
+                    >
+                      Select Seats & Book
+                    </button>
+                  </div>
+                ))}
             </div>
           ))
         )}
