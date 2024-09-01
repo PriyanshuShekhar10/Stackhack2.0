@@ -14,11 +14,6 @@ const Footer = () => {
               About
             </a>
           </li>
-          <li>
-            <a href="#projects" className="footer__link">
-              Project
-            </a>
-          </li>
         </ul>
         <span className="footer__copy">
           &#169; All Rights Reserved By
