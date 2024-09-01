@@ -15,6 +15,12 @@ require("./db");
 
 app.use(bodyParser.json());
 
+app.use(cookieParser());
+
+app.use("/auth", authRoutes);
+app.use("/admin", adminRoutes);
+app.use("/movie", movieRoutes);
+
 app.use(
   cors({
     origin: [
@@ -26,13 +32,6 @@ app.use(
     credentials: true, // Allow credentials
   })
 );
-
-app.use(cookieParser());
-
-app.use("/auth", authRoutes);
-app.use("/admin", adminRoutes);
-app.use("/movie", movieRoutes);
-
 app.get("/", (req, res) => {
   res.json({ message: "The API is working" });
 });
