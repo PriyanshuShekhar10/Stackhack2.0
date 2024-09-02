@@ -15,23 +15,19 @@ require("./db");
 
 app.use(bodyParser.json());
 
+app.use(
+  cors({
+    origin: true, // This allows all origins
+    credentials: true, // Allow credentials
+  })
+);
+
 app.use(cookieParser());
 
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 app.use("/movie", movieRoutes);
 
-app.use(
-  cors({
-    origin: [
-      "https://stackhack2-0.vercel.app/",
-      "https://stackhack2-0-hj88.vercel.app/",
-      "http://localhost:5173/",
-      "http://localhost:5174/",
-    ],
-    credentials: true, // Allow credentials
-  })
-);
 app.get("/", (req, res) => {
   res.json({ message: "The API is working" });
 });
