@@ -30,6 +30,7 @@ npm run dev
 ```
 
 **Important**: Uncomment the environment variable to localhost in both admin and frontend directories (if not already).
+               **the render backend takes around 50 seconds to spin up to load the data if used after a long time**
 
 **Dummy login credentials**:
 
